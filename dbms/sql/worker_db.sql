@@ -1,0 +1,121 @@
+-- Important file, to revise just execute one by one.
+CREATE DATABASE IF NOT EXISTS ORG;
+SHOW DATABASES;
+USE ORG;
+
+CREATE TABLE IF NOT EXISTS Worker (
+WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+FIRST_NAME VARCHAR(25),
+LAST_NAME VARCHAR(25),
+SALARY INT,
+JOINING_DATE DATETIME,
+DEPARTMENT VARCHAR(25)
+);
+
+INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)
+VALUES (1, 'Rahul', 'Gandhi', 10, '2024-02-01 09:16:11', 'HR');
+
+INSERT INTO Worker (FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)
+VALUES ('Lol', 'Modi', 100, '2024-01-01 09:16:11', 'Admin');
+
+INSERT INTO Worker (FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT)
+VALUES ('Amit', 'Shah', 50, '2024-01-26 09:16:11', 'Account');
+
+INSERT INTO Worker 
+VALUES (DEFAULT, 'Arvind', 'Kej', NULL, '2024-01-15 09:16:11', 'CEO');
+
+INSERT INTO Worker 
+VALUES (DEFAULT, 'Mamta', 'Banerjee', NULL, '2024-01-15 09:16:11', 'Admin');
+
+SELECT LAST_NAME, SALARY FROM Worker;
+
+SELECT * FROM Worker;
+
+CREATE TABLE IF NOT EXISTS Bonus (
+	WORKER_REF_ID INT,
+    BONUS_AMOUNT INT,
+    BONUS_DATE DATETIME,
+    FOREIGN KEY (WORKER_REF_ID)
+		REFERENCES Worker(WORKER_ID)
+        ON DELETE CASCADE
+);
+
+INSERT INTO Bonus (WORKER_REF_ID, BONUS_AMOUNT, BONUS_DATE)
+VALUES (1, 1, '2024-03-01 10:16:11'),
+(2, 10, '2024-03-01 10:17:11');
+
+SELECT * FROM BONUS;
+
+CREATE TABLE IF NOT EXISTS Title (
+	WORKER_REF_ID INT,
+    WORKER_TITLE VARCHAR(25),
+    AFFECTED_FROM DATETIME,
+    FOREIGN KEY (WORKER_REF_ID)
+		REFERENCES Worker(WORKER_ID)
+        ON DELETE CASCADE
+);
+
+INSERT INTO Title (WORKER_REF_ID, WORKER_TITLE, AFFECTED_FROM) VALUES
+(1, 'Manager', '2024-02-01 09:16:11');
+
+INSERT INTO Title (WORKER_REF_ID, WORKER_TITLE, AFFECTED_FROM) VALUES
+(2, 'Lead', '2024-01-01 09:16:11');
+
+SELECT * FROM Title;
+
+SELECT now();
+
+SELECT lcase("Aar");
+
+SELECT FIRST_NAME, LAST_NAME FROM Worker WHERE DEPARTMENT = 'HR';
+SELECT FIRST_NAME, LAST_NAME FROM Worker WHERE SALARY >= 10;
+
+-- salary between [10, 50]
+SELECT FIRST_NAME, LAST_NAME FROM Worker WHERE SALARY BETWEEN 10 AND 50;
+
+-- reduce OR statements
+-- department either HR or Admin
+SELECT * FROM Worker WHERE Department = 'HR' or Department = 'Admin';
+
+-- better way
+SELECT * FROM Worker WHERE DEPARTMENT IN ('HR', 'Admin');
+
+-- not command
+SELECT * FROM Worker WHERE DEPARTMENT NOT IN ('HR');
+
+-- is null
+SELECT * FROM Worker WHERE SALARY IS NULL;
+SELECT * FROM ORG.Worker WHERE SALARY IS NOT NULL;
+
+-- wild card characters
+-- % means any number of characters more than equal to 0
+SELECT * FROM Worker WHERE FIRST_NAME LIKE '%i_';
+
+-- _ means exactly one character
+SELECT * FROM Worker WHERE LAST_NAME LIKE '%i%';
+
+-- sorting using ORDER BY
+SELECT * FROM Worker ORDER BY SALARY ASC;
+-- ASC is default
+SELECT * FROM Worker WHERE SALARY IS NOT NULL ORDER BY SALARY DESC;
+SELECT * FROM Worker ORDER BY FIRST_NAME;
+
+-- Distinct Values
+SELECT DISTINCT DEPARTMENT FROM Worker;
+
+-- Group by
+SELECT department, AVG(salary) FROM Worker WHERE salary IS NOT NULL GROUP BY department;
+-- Similarly MIN, MAX, SUM, COUNT
+SELECT department, COUNT(department) FROM Worker WHERE salary IS NOT NULL GROUP BY department;
+-- Use WHERE before GROUP BY
+SELECT department, COUNT(department) FROM Worker GROUP BY department;
+
+-- Apply condition on GROUP BY using HAVING keyword
+SELECT department, COUNT(department) FROM Worker
+GROUP BY department HAVING COUNT(department) > 1;
+
+-- WHERE can't be used with GROUP BY
+-- This is invalid:
+-- SELECT department, COUNT(department) FROM Worker
+-- GROUP BY department WHERE COUNT(department) > 1;
+
