@@ -1,0 +1,4 @@
+When unified memory is accessed only by the CPU: No memory migration
+When unified memory is accessed only by the GPU: No memory migration
+When unified memory is accessed first by CPU then by GPU: Memory migration HtoD
+When unified memory is accessed first by GPU then by CPU: Memory migration DtoH

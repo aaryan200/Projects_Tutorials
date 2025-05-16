@@ -1,0 +1,9 @@
+Vector add kernel execution time:
+Number of SMs = 40
+
+1. One thread: 2.292s
+2. 32 threads: 0.412s
+3. 256 threads: 0.169s
+4. 16 blocks, 256 threads each: 0.143s
+5. 16 blocks, 512 threads each: 0.139s
+6. 80 blocks, 512 threads each: 0.12s (improvement because 80 is a multiple of 40)

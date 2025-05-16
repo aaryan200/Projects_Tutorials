@@ -1,0 +1,5 @@
+Compile and run:
+    nvcc -o OUTPUT_FILE_PATH INPUT_FILE_PATH.cu -run
+
+Report generation:
+    !nsys profile --stats=true -o OUTPUT_FILE_PATH ./EXECUTABLE_FILE_PATH

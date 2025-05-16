@@ -1,0 +1,3 @@
+1st execution: 23467.5 microseconds
+2nd execution (init kernel + mem prefetch to GPU): 203.6 (saxpy) + 271.1 (initWith) = 474.7 microseconds
+3rd execution 
